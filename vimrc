@@ -175,9 +175,6 @@ set tm=500
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-<BS>" Open split on vertically
-cnoremap help vert help
-
 " Set split to open on the right
 set splitright
 
@@ -213,8 +210,13 @@ if has("gui_running")
     set guioptions-=e
     set t_Co=256
     set guitablabel=%M\ %t
-"    set guifont=Ubuntu\ Mono\ 11 "Linux version
-    set guifont=Ubuntu_Mono:h11:cANSI "Winders version
+    if has("win32")
+        set guifont=Ubuntu_Mono:h11:cANSI
+    else
+        if has("unix")
+            set guifont=Ubuntu\ Mono\ 11
+        endif
+    endif
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -410,6 +412,8 @@ map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
