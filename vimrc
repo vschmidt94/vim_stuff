@@ -211,7 +211,7 @@ if has("gui_running")
     set t_Co=256
     set guitablabel=%M\ %t
     if has("win32")
-        set guifont=Ubuntu_Mono:h11:cANSI
+        set guifont=Ubuntu_Mono_derivative_Powerlin:h11:cANSI
     else
         if has("unix")
             set guifont=Ubuntu\ Mono\ 11
@@ -519,6 +519,24 @@ let g:NERDTreeQuitOnOpen=1
 
 " }}}
 
+" Airline settings --------------------------{{{
+let g:airline_powerline_fonts=1
+let g:airline#exentensions#tabline#enabled=1
+
+" }}}
+
+" YouCompleteMe options --------------------------{{{
+
+"I was having problems with it erroring out on
+"vim scripts when editing so this just tells it
+"to work on c files
+let g:ycm_filetype_whitelist= {'c': 1, 'python': 1, 'cpp': 1}
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf = '~/vimfiles/clangflags.py'
+let g:ycm_autoclose_preview_window_after_insertion = 1
+"let g:ycm_collect_identifiers_from_tags_files = 1
+" }}}
+
 " fugitive/git settings --------------------------{{{
 " Going to use the 'g' prefix to signify git commands
 " So basically everything will be <leader>g<something>
@@ -567,7 +585,7 @@ colorscheme solarized
 
 " let g:solarized_termtrans=0
 " let g:solarized_degrade=0
-" let g:solarized_bold=1
+let g:solarized_bold=0
 " let g:solarized_underline=1
 " let g:solarized_italic=1
 " let g:solarized_termcolors=16
