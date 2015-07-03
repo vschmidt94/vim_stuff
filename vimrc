@@ -71,6 +71,11 @@ set wrap
 " set textwidth to 100
 set textwidth=100
 
+
+"Vertical lines
+set colorcolumn=25,37,61,71,81,93
+"highlight ColorColumn guibg=black
+
 " maximize in gui on launch
 if has("gui_running")
   " GUI is running or is about to start.
@@ -211,7 +216,7 @@ if has("gui_running")
     set t_Co=256
     set guitablabel=%M\ %t
     if has("win32")
-        set guifont=Ubuntu_Mono_derivative_Powerlin:h11:cANSI
+        set guifont=DejaVu_Sans_Mono_for_Powerline:h9:cANSI
     else
         if has("unix")
             set guifont=Ubuntu\ Mono\ 11
@@ -414,6 +419,9 @@ map <leader>p :cp<cr>
 
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
+"This allows exploring file by function variable declarations
+"Use leader t to show the tagbar
+nnoremap <leader>t :TagbarOpenAutoClose<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -521,7 +529,7 @@ let g:NERDTreeQuitOnOpen=1
 
 " Airline settings --------------------------{{{
 let g:airline_powerline_fonts=1
-let g:airline#exentensions#tabline#enabled=1
+let g:airline#extensions#tabline#enabled=1
 
 " }}}
 
@@ -536,6 +544,46 @@ let g:ycm_global_ycm_extra_conf = '~/vimfiles/clangflags.py'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 "let g:ycm_collect_identifiers_from_tags_files = 1
 " }}}
+
+
+" Cscope settings --------------------------{{{
+" Found a trick for asynchronous running and updating, so what we do is call
+" cscope to update the file databases, then once it's done it calls back into
+" Vim to reset or add the cscope database.
+"nnoremap <f12> :!start /min ctags -R --fields=+liaS --c-kinds=+px --c++-kinds=+p --extra=+q --languages=c,c++ --excmd=n . <cr>
+nnoremap <f12> :exec 'silent !start /b cmd /c "
+\                 cscope.exe -R -b -q
+\                 & vim --servername '.v:servername.' --remote-expr UpdateCscope()
+\                 "'<cr>
+\                 \|:silent !start /b ctags -R --fields=+liaS --c-kinds=+px --c++-kinds=+p
+\                          --extra=+q --languages=c,c++ --excmd=n . <cr>
+
+function! UpdateCscope()
+cscope kill -1
+cscope add cscope.out
+endfunction
+
+if filereadable("cscope.out")
+cscope add cscope.out
+endif
+nnoremap <leader>cs :cs find s <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>cg :cs find g <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>ct :cs find t <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>ce :cs find e <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>cf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nnoremap <leader>ci :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nnoremap <leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>vs :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>vg :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>vc :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>vt :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>ve :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>vf :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+nnoremap <leader>vi :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nnoremap <leader>vd :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+" }}}
+
 
 " fugitive/git settings --------------------------{{{
 " Going to use the 'g' prefix to signify git commands
