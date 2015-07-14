@@ -203,7 +203,7 @@ nnoremap <leader>H <C-W><S-h>
 syntax enable
 
 try
-    colorscheme solarized
+    colorscheme wombat256mod
 catch
 endtry
 
@@ -216,7 +216,7 @@ if has("gui_running")
     set t_Co=256
     set guitablabel=%M\ %t
     if has("win32")
-        set guifont=DejaVu_Sans_Mono_for_Powerline:h9:cANSI
+        set guifont=Ubuntu_Mono_derivative_Powerlin:h10:cANSI
     else
         if has("unix")
             set guifont=Ubuntu\ Mono\ 11
@@ -625,7 +625,7 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 let g:solarized_contrast="high"    "default value is normal
 syntax enable
 set background=dark
-colorscheme solarized
+colorscheme wombat256
 " ------------------------------------------------------------------
 
 " The following items are available options, but do not need to be
