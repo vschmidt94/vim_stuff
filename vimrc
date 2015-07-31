@@ -228,10 +228,6 @@ endif
 set encoding=utf8
 
 
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -417,11 +413,54 @@ map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
+" Tagbar options --------------------------{{{
 "This allows exploring file by function variable declarations
 "Use leader t to show the tagbar
+nmap <F8> :TagbarToggle<CR>
 nnoremap <leader>t :TagbarOpenAutoClose<CR>
+
+"override the order of displayed info for my
+"preferences
+let g:tagbar_type_c = {
+    \ 'kinds' : [
+        \ 'f:functions:0:0',
+        \ 'd:macros:0:1',
+        \ 'g:enums',
+        \ 'e:enumerators:0:1',
+        \ 't:typedefs:0:0',
+        \ 's:structs',
+        \ 'u:unions',
+        \ 'm:members:0:0',
+        \ 'v:variables:0:0',
+    \ ],
+\ }
+
+
+let g:tagbar_type_cpp = {
+    \ 'kinds' : [
+        \ 'f:functions:0:0',
+        \ 'd:macros:0:1',
+        \ 'g:enums',
+        \ 'e:enumerators:0:1',
+        \ 't:typedefs:0:0',
+        \ 'n:namespaces',
+        \ 'c:classes',
+        \ 's:structs',
+        \ 'u:unions',
+        \ 'm:members:0:0',
+        \ 'v:variables:0:0',
+    \ ],
+\ }
+
+let g:tagbar_type_jam = {
+    \ 'ctagstype' : 'jam',
+    \ 'kinds'     : [
+        \ 'r:rules',
+        \ 'v:variables'
+    \ ],
+\ }
+
+" }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -513,6 +552,14 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
+
+" Ycm holds onto files more than it should. This should help with file saves
+command! W call SaveWithYCM()
+function! SaveWithYCM()
+YcmRestartServer
+w!
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug-ins
@@ -658,3 +705,7 @@ let g:solarized_bold=0
 " map ctags to open in vertical split or tab
 map <C-\> :tag <CR>:exec("tag ".expand("<cword>"))<CR>
 map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+" Easytags
+" disable the easytags report to keep real messages on command line
+let g:easytags_suppress_report=1
