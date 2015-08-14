@@ -318,7 +318,6 @@ map <leader>ba :1,1000 bd!<cr>
 
 " Maps leader-bb to show list of buffers and waits on number
 " to switch to.
-" Think g for go
 map <leader>bb :ls<CR>:b<Space>
 
 " Useful mappings for managing tabs
