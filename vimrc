@@ -48,6 +48,7 @@
 set history=700
 
 " Displays line numbers
+set relativenumber
 set number
 
 " Enable Pathogen plugin
@@ -106,7 +107,6 @@ nmap <leader>w :w!<cr>
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -227,6 +227,8 @@ endif
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
+"Highlight trailing whitespace
+"let g:c_space_errors=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -236,6 +238,11 @@ set nobackup
 set nowb
 set noswapfile
 
+" Automatically save file when transitioning
+set autowrite
+
+" Prevent always asking if you want to reload the file when Vis Studio
+set autoread
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -308,6 +315,11 @@ map <leader>bd :Bclose<cr>
 
 " Close all the buffers
 map <leader>ba :1,1000 bd!<cr>
+
+" Maps leader-bb to show list of buffers and waits on number
+" to switch to.
+" Think g for go
+map <leader>bb :ls<CR>:b<Space>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -581,7 +593,7 @@ let g:airline#extensions#tabline#enabled=1
 " }}}
 
 " YouCompleteMe options --------------------------{{{
-
+" (as with a lot of this, from Nick Santana's vimrc)
 "I was having problems with it erroring out on
 "vim scripts when editing so this just tells it
 "to work on c files
@@ -709,3 +721,7 @@ map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " Easytags
 " disable the easytags report to keep real messages on command line
 let g:easytags_suppress_report=1
+
+" YUNOcommit
+" 20 writes before yelling at me
+let g:YUNOcommit_after=20
