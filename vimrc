@@ -67,15 +67,13 @@ filetype indent on
 set wrap
 
 " set spell checker
-" set spell
+set spell
 
 " set textwidth to 100
 set textwidth=100
+" except for git commit files
+au FileType gitcommit set tw=72
 
-
-"Vertical lines
-set colorcolumn=25,37,61,71,81,93
-"highlight ColorColumn guibg=black
 
 " maximize in gui on launch
 if has("gui_running")
@@ -106,7 +104,7 @@ nmap <leader>w :w!<cr>
 
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
-command W w !sudo tee % > /dev/null
+" command W w !sudo tee % > /dev/null
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -204,10 +202,13 @@ syntax enable
 
 try
     colorscheme wombat256mod
+    colorscheme lucius
+    LuciusDark
 catch
 endtry
 
-set background=dark
+" set background=dark
+"let g:lucius_style=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -216,7 +217,7 @@ if has("gui_running")
     set t_Co=256
     set guitablabel=%M\ %t
     if has("win32")
-        set guifont=Ubuntu_Mono_derivative_Powerlin:h10:cANSI
+        set guifont=Ubuntu_Mono_derivative_Powerlin:h11:cANSI
     else
         if has("unix")
             set guifont=Ubuntu\ Mono\ 11
@@ -229,6 +230,11 @@ set encoding=utf8
 
 "Highlight trailing whitespace
 "let g:c_space_errors=1
+
+"Vertical lines
+set colorcolumn=25,37,61,71,81,93
+highlight ColorColumn guibg=grey22
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -473,6 +479,17 @@ let g:tagbar_type_jam = {
 
 " }}}
 
+" Garmin plugin settings-------------------------------{{{
+let g:garmin_requiem_exe = 'd:/gtn/requiem/requiem.exe'
+
+" Pylint falls on its face for relative imports so disable that check for now
+let $PYTHONPATH .= ';' . resolve(expand('~')) . '/vimfiles/bundle/vim-garmin/pychecks'
+let g:syntastic_python_pylint_args  = '--rcfile='
+let g:syntastic_python_pylint_args .= resolve(expand('~')) . '/vimfiles/bundle/vim-garmin/pychecks/aviation_pylint.cfg -f parseable -r n -i y'
+let g:syntastic_python_pylint_args .= ' --disable=F0401'
+
+" }}}
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -600,7 +617,8 @@ let g:ycm_filetype_whitelist= {'c': 1, 'python': 1, 'cpp': 1}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/vimfiles/clangflags.py'
 let g:ycm_autoclose_preview_window_after_insertion = 1
-"let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_always_populate_location_list = 1
 " }}}
 
 
@@ -680,10 +698,10 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 " ------------------------------------------------------------------
 " Solarized Colorscheme Config
 " ------------------------------------------------------------------
-let g:solarized_contrast="high"    "default value is normal
-syntax enable
-set background=dark
-colorscheme wombat256
+"let g:solarized_contrast="high"    "default value is normal
+"syntax enable
+"set background=dark
+"colorscheme wombat256
 " ------------------------------------------------------------------
 
 " The following items are available options, but do not need to be
@@ -691,7 +709,7 @@ colorscheme wombat256
 
 " let g:solarized_termtrans=0
 " let g:solarized_degrade=0
-let g:solarized_bold=0
+"let g:solarized_bold=0
 " let g:solarized_underline=1
 " let g:solarized_italic=1
 " let g:solarized_termcolors=16
@@ -724,3 +742,26 @@ let g:easytags_suppress_report=1
 " YUNOcommit
 " 20 writes before yelling at me
 let g:YUNOcommit_after=20
+
+" CTRLP plugin settings --------------------------{{{
+"For G2xxx with all the submodules the 'r' option
+"locks your searches down in your local submodule
+"so just use 'a' so we can see all files from where
+"vim was started.
+let g:ctrlp_working_path_mode = 'a'
+
+"I just want to open by file name so ignore
+"path matching
+"let g:ctrlp_by_filename = 1
+
+"I don't like ctrl, if i don't need it
+"so remap ctrl p to be easier to open
+let g:ctrlp_map = '<leader>f'
+
+"ignore my binaries
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|sbas)$',
+    \ 'file': '\v\.(lnk|ucfg|sln|o32|o|via|exe|so|dll|bmp|obj|rsp|oxml|sbmp|lib|pyc)$',
+    \ }
+" }}}
+

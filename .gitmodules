@@ -49,3 +49,9 @@
 [submodule "bundle/YUNOcommit.vim"]
 	path = bundle/YUNOcommit.vim
 	url = https://github.com/esneider/YUNOcommit.vim.git
+[submodule "colors/lucius"]
+	path = colors/lucius
+	url = https://github.com/jonathanfilip/vim-lucius.git
+[submodule "bundle/nerdcommenter"]
+	path = bundle/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter.git
