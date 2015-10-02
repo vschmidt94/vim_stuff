@@ -435,7 +435,10 @@ if s:style == "light"
     hi CursorLine                   guibg=#dadada
     hi IncSearch    guifg=fg        guibg=#5fd7d7
     hi MatchParen   guifg=NONE      guibg=#5fd7d7
-    hi Search       guifg=fg        guibg=#ffaf00
+"CVS mod here - using column coloring means I loose the contrast sometimes on
+"highlighted searches.
+"   hi Search       guifg=fg        guibg=@ffaf00
+    hi Search       guifg=#fafafa   guibg=#ffaf00
     hi Visual                       guibg=#afd7ff
     if s:contrast == "low"
         hi Cursor                       guibg=#87afd7
