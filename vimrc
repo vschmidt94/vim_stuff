@@ -201,16 +201,26 @@ nnoremap <leader>H <C-W><S-h>
 syntax enable
 
 try
-    colorscheme wombat256mod
     colorscheme lucius
     LuciusDark
 catch
 endtry
 
-" set background=dark
-"let g:lucius_style=dark
+" Change highlighting colors (I use column highlighting and default fg color in searches
+" can be lost, so make it white-ish-er)
+highlight search guifg=#F7F7F7
+highlight IncSearch guibg=#afd7ff
+highlight IncSearch guifg=#F7F7F7
+
+" Break up strings from other constants
+highlight constant guifg=#8787af
+highlight string guifg=#AFAF87
+highlight character guifg=#AFAF87
 
 " Set extra options when running in GUI mode
+" Note: this unix stuff was when I was shooting for one vimrc file to rule them all.
+"       I've abandoned that approach, but leaving here in case I give it another shot
+"       someday.
 if has("gui_running")
     set guioptions-=T
     set guioptions-=e
