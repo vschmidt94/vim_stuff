@@ -209,7 +209,7 @@ endtry
 " Change highlighting colors (I use column highlighting and default fg color in searches
 " can be lost, so make it white-ish-er)
 highlight search guifg=#F7F7F7
-highlight IncSearch guibg=#afd7ff
+highlight IncSearch guibg=#006bd6
 highlight IncSearch guifg=#F7F7F7
 
 " Break up strings from other constants
