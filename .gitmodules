@@ -55,3 +55,6 @@
 [submodule "bundle/nerdcommenter"]
 	path = bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
+[submodule "bundle/clam"]
+	path = bundle/clam
+	url = https://github.com/sjl/clam.vim.git
