@@ -44,6 +44,11 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Set shell if on windows box
+if has("win32")
+    set shell=cmd.exe
+endif
+
 " Sets how many lines of history VIM has to remember
 set history=700
 
