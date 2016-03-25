@@ -455,10 +455,10 @@ nnoremap <leader>t :TagbarOpenAutoClose<CR>
 "preferences
 let g:tagbar_type_c = {
     \ 'kinds' : [
-        \ 'f:functions:0:0',
-        \ 'd:macros:0:1',
+        \ 'f:functions:0:1',
+        \ 'd:macros:0:0',
         \ 'g:enums',
-        \ 'e:enumerators:0:1',
+        \ 'e:enumerators:0:0',
         \ 't:typedefs:0:0',
         \ 's:structs',
         \ 'u:unions',
@@ -470,10 +470,10 @@ let g:tagbar_type_c = {
 
 let g:tagbar_type_cpp = {
     \ 'kinds' : [
-        \ 'f:functions:0:0',
-        \ 'd:macros:0:1',
+        \ 'f:functions:0:1',
+        \ 'd:macros:0:0',
         \ 'g:enums',
-        \ 'e:enumerators:0:1',
+        \ 'e:enumerators:0:0',
         \ 't:typedefs:0:0',
         \ 'n:namespaces',
         \ 'c:classes',
@@ -607,6 +607,12 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug-ins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Auto-Save settings --------------------------{{{
+let g:auto_save_in_insert_mode=0
+let g:auto_save=1
+
+" }}}
+
 " NERDtree settings --------------------------{{{
 nnoremap <leader>nn :NERDTreeToggle<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
@@ -620,6 +626,8 @@ let g:NERDTreeQuitOnOpen=1
 " Airline settings --------------------------{{{
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline#extensions#tagbar#flags = 's'
 
 " }}}
 
@@ -747,15 +755,17 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 " }}}
 "
 " map ctags to open in vertical split or tab
+:set tags=./tags,tags;$HOME
 map <C-\> :tag <CR>:exec("tag ".expand("<cword>"))<CR>
 map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Easytags
+:set tags=./tags,tags;
 " disable the easytags report to keep real messages on command line
 let g:easytags_suppress_report=1
 
 " YUNOcommit
-" 20 writes before yelling at me
+" 250 writes before yelling at me - a lot because I am autosaving
 let g:YUNOcommit_after=20
 
 " CTRLP plugin settings --------------------------{{{
