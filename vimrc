@@ -1,26 +1,15 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer:
-"       Amir Salihefendic
-"       http://amix.dk - amix@amix.dk
+"---------------------------------------------------------------------
 "
-" Version:
-"       5.0 - 29/05/12 15:43:36
+"   Vaughan's
+"   vimrc - VIM configuration file
 "
-" Blog_post:
-"       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
 "
-" Awesome_version:
-"       Get this config, nice color schemes and lots of plugins!
+" Portions liberated from various other vimrc's out in the
+" wild, but special credit to:
 "
-"       Install the awesome version from:
-"
-"           https://github.com/amix/vimrc
-"
-" Syntax_highlighted:
-"       http://amix.dk/vim/vimrc.html
-"
-" Raw_version:
-"       http://amix.dk/vim/vimrc.txt
+" - Amir Salihefendic @ http://amix.dx
+" - Nick Santana
+" - Andrew Matteson
 "
 " Sections:
 "    -> General
@@ -37,32 +26,26 @@
 "    -> Misc
 "    -> Helper functions
 "    -> Plug-in settings
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Set shell if on windows box
+"---------------------------------------------------------------------
+
+" Set shell if on windows box
 if has("win32")
     set shell=cmd.exe
 endif
 
-" Sets how many lines of history VIM has to remember
-set history=700
-
-" Displays line numbers
-set relativenumber
-set number
-
 " Enable Pathogen plugin
-" Pathogen options --------------------------{{{
-"have pathogen start up first to load plugins
+" have pathogen start up first to load plugins
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 Helptags
-" }}})
+
+" Sets how many lines of history VIM has to remember
+set history=700
 
 " Enable filetype plugins
 filetype plugin on
@@ -74,13 +57,7 @@ set wrap
 " set spell checker
 set spell
 
-" set textwidth to 100
-set textwidth=100
-" except for git commit files
-au FileType gitcommit set tw=72
-
-
-" maximize in gui on launch
+" maximize in GUI on launch
 if has("gui_running")
   " GUI is running or is about to start.
   " Maximize gvim window (for an alternative on Windows, see simalt below).
@@ -95,9 +72,6 @@ else
   endif
 endif
 
-" Set to auto read when a file is changed from the outside
-set autoread
-
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let g:mapleader = "\<Space>"
@@ -107,14 +81,19 @@ let maplocalleader = "\<cr>"
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" :W sudo saves the file
-" (useful for handling the permission-denied error)
-" command W w !sudo tee % > /dev/null
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
+"---------------------------------------------------------------------
+
+" Displays line numbers
+set relativenumber
+set number
+
+"Always show current position
+set ruler
+
+" Set scroll offset - keeps cursor from going all the way to top or
+" bottom when moving vertically using j/k
 set so=7
 
 " Avoid garbled characters in Chinese language windows OS
@@ -122,7 +101,8 @@ let $LANG='en'
 set langmenu=en
 source $VIMRUNTIME/menu.vim
 
-" Turn on the WiLd menu
+" Turn on the WiLd menu - for bash-like file name completion
+set wildmode=longest,list
 set wildmenu
 
 " Ignore compiled files
@@ -132,9 +112,6 @@ if has("win16") || has("win32")
 else
     set wildignore+=.git\*,.hg\*,.svn\*
 endif
-
-"Always show current position
-set ruler
 
 " Height of the command bar
 set cmdheight=2
@@ -159,6 +136,9 @@ set smartcase
 
 " Highlight search results
 set hlsearch
+
+" un-Highlight with double escape
+nnoremap <esc> :nohlsearch<cr>:<esc>
 
 " Makes search act like search in modern browsers
 set incsearch
@@ -199,9 +179,10 @@ nnoremap <leader>K <C-W><S-k>
 nnoremap <leader>L <C-W><S-l>
 nnoremap <leader>H <C-W><S-h>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Enable syntax highlighting
 syntax enable
 
@@ -212,7 +193,7 @@ catch
 endtry
 
 " Change highlighting colors (I use column highlighting and default fg color in searches
-" can be lost, so make it white-ish-er)
+" can be lost, so make it white-er)
 highlight search guifg=#F7F7F7
 highlight IncSearch guibg=#006bd6
 highlight IncSearch guifg=#F7F7F7
@@ -240,34 +221,38 @@ if has("gui_running")
     endif
 endif
 
-" Set utf8 as standard encoding and en_US as the standard language
+" Set utf8 as standard encoding
 set encoding=utf8
 
 "Highlight trailing whitespace
 "let g:c_space_errors=1
 
-"Vertical lines
+"Vertical lines - set up for Garmin code conventions & spacings
 set colorcolumn=25,37,61,71,81,93
 highlight ColorColumn guibg=grey22
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
+"---------------------------------------------------------------------
+
+" Turn backup off, since most stuff is in git or SVN anyway...
 set nobackup
 set nowb
 set noswapfile
 
-" Automatically save file when transitioning
-set autowrite
-
-" Prevent always asking if you want to reload the file when Vis Studio
+" Set to auto read when a file is changed from the outside
 set autoread
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set autowrite for automatically saving the file when
+" transitioning
+set autowrite
+
+
+"---------------------------------------------------------------------
 " => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Use spaces instead of tabs
 set expandtab
 
@@ -278,27 +263,35 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
-" Linebreak on 500 characters
-set lbr
-set tw=500
+" set text width to 120
+set tw=120
+" except for git commit files
+au FileType gitcommit set tw=72
 
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+" set linebreak to break after word, not mid-word
+set linebreak
+
+" Auto indent
+set ai
+" Smart indent
+set si
+" Wrap lines
+set wrap
 
 
-""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Visual mode related
-""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f', '')<CR>
+vnoremap <silent> * :call VisualSelection('b', '')<CR>
 vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
@@ -319,17 +312,13 @@ inoremap <Right> <nop>
 inoremap <Down> <nop>
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+" DISABLED because I don't use and many conflicts with using space as leader,
+" but leaving here in case I want to use something similar later.
+" map <space> /
+" map <c-space> ?
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
-
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
@@ -353,7 +342,6 @@ let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
-
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -376,10 +364,14 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+" Use virtual edit to allow walking around anywhere
+set virtualedit=all
 
-""""""""""""""""""""""""""""""
+
+"---------------------------------------------------------------------
 " => Status line
-""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Always show the status line
 set laststatus=2
 
@@ -387,9 +379,10 @@ set laststatus=2
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
@@ -416,10 +409,11 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Ack searching and cope displaying
 "    requires ack.vim - it's much better than vimgrep/grep
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " When you press gv you Ack after the selected text
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
@@ -445,69 +439,10 @@ map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
-" Tagbar options --------------------------{{{
-"This allows exploring file by function variable declarations
-"Use leader t to show the tagbar
-nmap <F8> :TagbarToggle<CR>
-nnoremap <leader>t :TagbarOpenAutoClose<CR>
-
-"override the order of displayed info for my
-"preferences
-let g:tagbar_type_c = {
-    \ 'kinds' : [
-        \ 'f:functions:0:1',
-        \ 'd:macros:0:0',
-        \ 'g:enums',
-        \ 'e:enumerators:0:0',
-        \ 't:typedefs:0:0',
-        \ 's:structs',
-        \ 'u:unions',
-        \ 'm:members:0:0',
-        \ 'v:variables:0:0',
-    \ ],
-\ }
-
-
-let g:tagbar_type_cpp = {
-    \ 'kinds' : [
-        \ 'f:functions:0:1',
-        \ 'd:macros:0:0',
-        \ 'g:enums',
-        \ 'e:enumerators:0:0',
-        \ 't:typedefs:0:0',
-        \ 'n:namespaces',
-        \ 'c:classes',
-        \ 's:structs',
-        \ 'u:unions',
-        \ 'm:members:0:0',
-        \ 'v:variables:0:0',
-    \ ],
-\ }
-
-let g:tagbar_type_jam = {
-    \ 'ctagstype' : 'jam',
-    \ 'kinds'     : [
-        \ 'r:rules',
-        \ 'v:variables'
-    \ ],
-\ }
-
-" }}}
-
-" Garmin plugin settings-------------------------------{{{
-let g:garmin_requiem_exe = 'd:/gtn/requiem/requiem.exe'
-
-" Pylint falls on its face for relative imports so disable that check for now
-let $PYTHONPATH .= ';' . resolve(expand('~')) . '/vimfiles/bundle/vim-garmin/pychecks'
-let g:syntastic_python_pylint_args  = '--rcfile='
-let g:syntastic_python_pylint_args .= resolve(expand('~')) . '/vimfiles/bundle/vim-garmin/pychecks/aviation_pylint.cfg -f parseable -r n -i y'
-let g:syntastic_python_pylint_args .= ' --disable=F0401'
-
-" }}}
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
@@ -518,9 +453,10 @@ map <leader>sa zg
 map <leader>s? z=
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
+
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
@@ -533,12 +469,9 @@ map <leader>x :e ~/buffer.md<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
@@ -596,56 +529,31 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
-" Ycm holds onto files more than it should. This should help with file saves
-command! W call SaveWithYCM()
-function! SaveWithYCM()
-YcmRestartServer
-w!
-endfunction
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"---------------------------------------------------------------------
 " => Plug-ins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Auto-Save settings --------------------------{{{
-let g:auto_save_in_insert_mode=0
-let g:auto_save=1
+"---------------------------------------------------------------------
 
-" }}}
-
-" NERDtree settings --------------------------{{{
-nnoremap <leader>nn :NERDTreeToggle<CR>
-nnoremap <leader>nf :NERDTreeFind<CR>
-
-"This one closes NERDTree on normal open commands but stays open for the g*
-"commands
-let g:NERDTreeQuitOnOpen=1
-
-" }}}
-
-" Airline settings --------------------------{{{
+"-----------------------------------
+" -> Plug-in: Airline
+"-----------------------------------
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 's'
 
-" }}}
 
-" YouCompleteMe options --------------------------{{{
-" (as with a lot of this, from Nick Santana's vimrc)
-"I was having problems with it erroring out on
-"vim scripts when editing so this just tells it
-"to work on c files
-let g:ycm_filetype_whitelist= {'c': 1, 'python': 1, 'cpp': 1}
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_global_ycm_extra_conf = '~/vimfiles/clangflags.py'
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_always_populate_location_list = 1
-" }}}
+"-----------------------------------
+" -> Plug-in: Auto-Save
+"-----------------------------------
+let g:auto_save_in_insert_mode=0
+let g:auto_save=1
 
 
-" Cscope settings --------------------------{{{
+"-----------------------------------
+" -> Plug-in: Cscope
+"-----------------------------------
 " Found a trick for asynchronous running and updating, so what we do is call
 " cscope to update the file databases, then once it's done it calls back into
 " Vim to reset or add the cscope database.
@@ -681,10 +589,53 @@ nnoremap <leader>ve :vert scs find e <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>vf :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
 nnoremap <leader>vi :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nnoremap <leader>vd :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-" }}}
 
 
-" fugitive/git settings --------------------------{{{
+"-----------------------------------
+" -> Plug-in: Ctags
+"-----------------------------------
+" map ctags to open in vertical split or tab
+:set tags=./tags,tags;$HOME
+map <C-\> :tag <CR>:exec("tag ".expand("<cword>"))<CR>
+map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+
+"-----------------------------------
+" -> Plug-in: CTRL-P
+"-----------------------------------
+" For G2xxx with all the submodules the 'r' option
+" locks your searches down in your local submodule
+" so just use 'a' so we can see all files from where
+" vim was started.
+let g:ctrlp_working_path_mode = 'a'
+
+" I just want to open by file name so ignore
+" path matching
+"let g:ctrlp_by_filename = 1
+
+" I don't like ctrl, if i don't need it
+" so remap CTRL-P to be easier to open with leader-f
+let g:ctrlp_map = '<leader>f'
+
+"ignore binaries
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|sbas)$',
+    \ 'file': '\v\.(lnk|ucfg|sln|o32|o|via|exe|so|dll|bmp|obj|rsp|oxml|sbmp|lib|pyc)$',
+    \ }
+
+"-----------------------------------
+" -> Plug-in: Easytags
+"  Note to myself: random slow-downs trace back to easytags - not sure I
+"  want to keep using.
+"-----------------------------------
+:set tags=./tags,tags;
+" disable the easytags report to keep real messages on command line
+let g:easytags_suppress_report=1
+
+
+"-----------------------------------
+" -> Plug-in: Fugitive
+"-----------------------------------
 " Going to use the 'g' prefix to signify git commands
 " So basically everything will be <leader>g<something>
 nnoremap <leader>gs :Gstatus<CR>
@@ -710,83 +661,122 @@ endfunction
 " Add the branch to the status line
 set laststatus=2
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-" }}}
-" lazy method of appending this onto your .vimrc ":w! >> ~/.vimrc"
-" ------------------------------------------------------------------
-" this block of commands has been autogenerated by solarized.vim and
-" includes the current, non-default Solarized option values.
-" To use, place these commands in your .vimrc file (replacing any
-" existing colorscheme commands). See also ":help solarized"
-
-" ------------------------------------------------------------------
-" Solarized Colorscheme Config
-" ------------------------------------------------------------------
-"let g:solarized_contrast="high"    "default value is normal
-"syntax enable
-"set background=dark
-"colorscheme wombat256
-" ------------------------------------------------------------------
-
-" The following items are available options, but do not need to be
-" included in your .vimrc as they are currently set to their defaults.
-
-" let g:solarized_termtrans=0
-" let g:solarized_degrade=0
-"let g:solarized_bold=0
-" let g:solarized_underline=1
-" let g:solarized_italic=1
-" let g:solarized_termcolors=16
-" let g:solarized_visibility="normal"
-" let g:solarized_diffmode="normal"
-" let g:solarized_hitrail=0
-" let g:solarized_menu=1
 
 
-" My utility functionality settings --------------------------{{{
-" I don't use horizontal splits, so instead i'm going to remap go to
-" definition to be a vertical split.
-" This is some monkey magic stole from http://stackoverflow.com/questions/2269798/vim-as-a-note-taking-platform-jump-to-tag-in-vertically-split-windows
-" I want to find a way to not open a new split if it's already there.
-" nnoremap <C-W>] :call ReuseSplit("CTRL-W_]", 'v')<CR>
-" nnoremap <C-W><C-]> :call ReuseSplit("CTRL-W_CTRL-]", 'v')<CR>
-" nnoremap <C-W>f :call ReuseSplit("CTRL-W_f", 'v')<CR>
-" nnoremap <C-W><C-F> :call ReuseSplit("CTRL-W_CTRL-F", 'v')<CR>
+"-----------------------------------
+" -> Plug-in: Garmin-Vim
+"-----------------------------------
 
-" }}}
-"
-" map ctags to open in vertical split or tab
-:set tags=./tags,tags;$HOME
-map <C-\> :tag <CR>:exec("tag ".expand("<cword>"))<CR>
-map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+let g:garmin_requiem_exe = 'd:/gtn/requiem/requiem.exe'
 
-" Easytags
-:set tags=./tags,tags;
-" disable the easytags report to keep real messages on command line
-let g:easytags_suppress_report=1
+" Pylint falls on its face for relative imports so disable that check for now
+let $PYTHONPATH .= ';' . resolve(expand('~')) . '/vimfiles/bundle/vim-garmin/pychecks'
+let g:syntastic_python_pylint_args  = '--rcfile='
+let g:syntastic_python_pylint_args .= resolve(expand('~')) . '/vimfiles/bundle/vim-garmin/pychecks/aviation_pylint.cfg -f parseable -r n -i y'
+let g:syntastic_python_pylint_args .= ' --disable=F0401'
 
-" YUNOcommit
+
+"-----------------------------------
+" -> Plug-in: linediff
+"-----------------------------------
+
+let g:linediff_buffer_type = 'scratch'
+
+
+"-----------------------------------
+" -> Plug-in: Tagbar
+"-----------------------------------
+
+"This allows exploring file by function variable declarations
+"Use leader t to show the tagbar
+nmap <F8> :TagbarToggle<CR>
+nnoremap <leader>t :TagbarOpenAutoClose<CR>
+
+"override the order of displayed info for my
+"preferences
+let g:tagbar_type_c = {
+    \ 'kinds' : [
+        \ 'f:functions:0:1',
+        \ 'd:macros:0:0',
+        \ 'g:enums',
+        \ 'e:enumerators:0:0',
+        \ 't:typedefs:0:0',
+        \ 's:structs',
+        \ 'u:unions',
+        \ 'm:members:0:0',
+        \ 'v:variables:0:0',
+    \ ],
+\ }
+
+let g:tagbar_type_cpp = {
+    \ 'kinds' : [
+        \ 'f:functions:0:1',
+        \ 'd:macros:0:0',
+        \ 'g:enums',
+        \ 'e:enumerators:0:0',
+        \ 't:typedefs:0:0',
+        \ 'n:namespaces',
+        \ 'c:classes',
+        \ 's:structs',
+        \ 'u:unions',
+        \ 'm:members:0:0',
+        \ 'v:variables:0:0',
+    \ ],
+\ }
+
+let g:tagbar_type_jam = {
+    \ 'ctagstype' : 'jam',
+    \ 'kinds'     : [
+        \ 'r:rules',
+        \ 'v:variables'
+    \ ],
+\ }
+
+
+"-----------------------------------
+" -> Plug-in: Ultisnips
+"-----------------------------------
+
+" set up UltiSnips to work nicely with you complete me
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+
+let g:UltiSnipsEditSplit='vertical'
+nnoremap <leader>eu :UltiSnipsEdit<cr>
+
+"-----------------------------------
+" -> Plug-in: YouCompleteMe
+"-----------------------------------
+" (as with a lot of this, from Nick Santana's vimrc)
+" I was having problems with it erroring out on
+" vim scripts when editing so this just tells it
+" to work on c files
+let g:ycm_filetype_whitelist= {'c': 1, 'python': 1, 'cpp': 1}
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf = '~/vimfiles/clangflags.py'
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_always_populate_location_list = 1
+
+nnoremap <localleader>] :YcmCompleter GoTo<CR>
+nnoremap <localleader>t :YcmCompleter GetType<CR>
+
+" YCM holds onto file longer than it should and sometimes prevents saves
+" This is a hack to force a save.
+function! SaveWithYCM()
+YcmRestartServer
+w!
+endfunction
+
+command! W call SaveWithYCM()
+
+"let g:ycm_collect_identifiers_from_tags_files = 1
+
+
+"-----------------------------------
+" -> Plug-in: YUNOcommit
+"-----------------------------------
 " 250 writes before yelling at me - a lot because I am autosaving
 let g:YUNOcommit_after=20
 
-" CTRLP plugin settings --------------------------{{{
-"For G2xxx with all the submodules the 'r' option
-"locks your searches down in your local submodule
-"so just use 'a' so we can see all files from where
-"vim was started.
-let g:ctrlp_working_path_mode = 'a'
-
-"I just want to open by file name so ignore
-"path matching
-"let g:ctrlp_by_filename = 1
-
-"I don't like ctrl, if i don't need it
-"so remap ctrl p to be easier to open
-let g:ctrlp_map = '<leader>f'
-
-"ignore my binaries
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|sbas)$',
-    \ 'file': '\v\.(lnk|ucfg|sln|o32|o|via|exe|so|dll|bmp|obj|rsp|oxml|sbmp|lib|pyc)$',
-    \ }
-" }}}
 
