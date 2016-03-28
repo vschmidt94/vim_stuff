@@ -197,6 +197,8 @@ endtry
 highlight search guifg=#F7F7F7
 highlight IncSearch guibg=#006bd6
 highlight IncSearch guifg=#F7F7F7
+highlight Structure guifg=#878700
+highlight Member guifg=#d7875f
 
 " Break up strings from other constants
 highlight constant guifg=#8787af
@@ -365,7 +367,7 @@ autocmd BufReadPost *
 set viminfo^=%
 
 " Use virtual edit to allow walking around anywhere
-set virtualedit=all
+" set virtualedit=all
 
 
 "---------------------------------------------------------------------
@@ -538,6 +540,7 @@ endfunction
 "-----------------------------------
 " -> Plug-in: Airline
 "-----------------------------------
+
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tagbar#enabled = 1
@@ -547,12 +550,32 @@ let g:airline#extensions#tagbar#flags = 's'
 "-----------------------------------
 " -> Plug-in: Auto-Save
 "-----------------------------------
+
 let g:auto_save_in_insert_mode=0
 let g:auto_save=1
 
 
 "-----------------------------------
-" -> Plug-in: Cscope
+" -> Plug-in: clighter
+"-----------------------------------
+
+" First need to add the vimfiles directory to the python path so it can find
+" the clangflags module.
+" exe 'python sys.path = sys.path + ["' . escape(expand("~/vimfiles"), ' \') . '"]'
+" py import clangflags
+
+" Clighter is using a global variable for the clang args, not ideal
+" architecture, but we'll work around it by setting the args each time a c
+" file is opened...  This really only needs to be done once per project, might
+" think about setting this manually...
+" augroup myclighterhack
+"     autocmd!
+"     autocmd FileType c,cpp call clighter#SetCompileArgs(pyeval('str(clangflags.RawFlags(vim.current.buffer.name))'))
+" augroup END
+
+
+"-----------------------------------
+" -> Plug-in: cscope
 "-----------------------------------
 " Found a trick for asynchronous running and updating, so what we do is call
 " cscope to update the file databases, then once it's done it calls back into
@@ -594,8 +617,11 @@ nnoremap <leader>vd :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 "-----------------------------------
 " -> Plug-in: Ctags
 "-----------------------------------
+
+" set tags to look for tag file in current folder and keep going up until
+" it hits root directory
+set tags=tags
 " map ctags to open in vertical split or tab
-:set tags=./tags,tags;$HOME
 map <C-\> :tag <CR>:exec("tag ".expand("<cword>"))<CR>
 map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
@@ -755,7 +781,7 @@ let g:ycm_filetype_whitelist= {'c': 1, 'python': 1, 'cpp': 1}
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/vimfiles/clangflags.py'
 let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
+"let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_always_populate_location_list = 1
 
 nnoremap <localleader>] :YcmCompleter GoTo<CR>
